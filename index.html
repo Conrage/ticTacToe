@@ -9,20 +9,22 @@
   <body>
     <main class="background">
       <div id="alert-message" class="alert-message"></div>
-      <section class="container">
-        <div class="tile" id="tile_1"></div>
-        <div class="tile" id="tile_2"></div>
-        <div class="tile" id="tile_3"></div>
-        <div class="tile" id="tile_4"></div>
-        <div class="tile" id="tile_5"></div>
-        <div class="tile" id="tile_6"></div>
-        <div class="tile" id="tile_7"></div>
-        <div class="tile" id="tile_8"></div>
-        <div class="tile" id="tile_9"></div>
-      </section>
-      <section class="win-alert">
-        <img id="winner-img" />
-        <p id="winner-msg"></p>
+      <section class="flex align-center justify-center relative">
+        <div class="win-alert">
+          <img id="winner-img" />
+          <p id="winner-msg"></p>
+        </div>
+        <div class="container">
+          <div class="tile" id="tile_1"></div>
+          <div class="tile" id="tile_2"></div>
+          <div class="tile" id="tile_3"></div>
+          <div class="tile" id="tile_4"></div>
+          <div class="tile" id="tile_5"></div>
+          <div class="tile" id="tile_6"></div>
+          <div class="tile" id="tile_7"></div>
+          <div class="tile" id="tile_8"></div>
+          <div class="tile" id="tile_9"></div>
+        </div>
       </section>
       <section class="display announcer hide"></section>
       <section class="controls">
@@ -170,6 +172,19 @@
       padding: 0;
       box-sizing: border-box;
       font-family: "Signika", sans-serif;
+      color: #404040;
+    }
+    .relative {
+      position: relative;
+    }
+    .flex {
+      display: flex;
+    }
+    .justify-center {
+      justify-content: center;
+    }
+    .align-center {
+      align-items: center;
     }
     .alert-message {
       font-size: 1.4rem;
@@ -212,18 +227,18 @@
       grid-template-rows: 33% 33% 33%;
       max-width: 300px;
     }
-    #winner-img{
+    #winner-img {
       max-width: 250px;
     }
     .win-alert {
       position: absolute;
       display: none;
       background-color: #fff;
-      min-height: 50%;
+      height: 100%;
       width: 100%;
       gap: 4rem;
-      top: 5%;
       justify-content: center;
+      z-index: 1;
       align-items: center;
       flex-direction: column;
     }
@@ -358,7 +373,7 @@
         width: 50%;
         height: 50%;
       }
-      .background{
+      .background {
         height: 80vh;
         padding: 5rem 0rem;
       }
