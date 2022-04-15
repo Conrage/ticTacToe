@@ -126,13 +126,13 @@
       setTimeout(() => {
         div.classList.remove(type + "-message");
         div.style.display = "none";
-      }, 2000)
-    }
+      }, 2000);
+    };
     socket.emit("entered-room", roomId);
     socket.on("entered-room-" + roomId, (room) => {
       let roomData = room;
       renderGame(roomData.tiles);
-      if(roomData.players.length > 1){
+      if (roomData.players.length > 1) {
         showMessage("A user is playing with you!", "good");
       }
     });
@@ -149,9 +149,9 @@
     socket.on("reset-game-" + roomId, () => {
       resetGame();
     });
-    socket.on("user-disconnected-"+roomId, () => {
-      showMessage("The user playing with you disconnected", 'error');
-    })
+    socket.on("user-disconnected-" + roomId, () => {
+      showMessage("The user playing with you disconnected", "error");
+    });
     const tiles = document.getElementsByClassName("tile");
     for (let tile of tiles) {
       tile.addEventListener("click", () => {
@@ -171,7 +171,7 @@
       box-sizing: border-box;
       font-family: "Signika", sans-serif;
     }
-    .alert-message{
+    .alert-message {
       font-size: 1.4rem;
       position: relative;
       text-align: center;
@@ -179,19 +179,19 @@
       justify-content: center;
       align-items: center;
     }
-    .error-message:after{
+    .error-message:after {
       position: absolute;
       content: "";
-      width:100%;
+      width: 100%;
       background-color: rgba(240, 76, 109, 0.404);
       z-index: -1;
       height: 30%;
       bottom: 5px;
     }
-    .good-message:after{
+    .good-message:after {
       position: absolute;
       content: "";
-      width:100%;
+      width: 100%;
       background-color: rgba(76, 240, 106, 0.404);
       z-index: -1;
       height: 30%;
@@ -212,11 +212,14 @@
       grid-template-rows: 33% 33% 33%;
       max-width: 300px;
     }
+    #winner-img{
+      max-width: 250px;
+    }
     .win-alert {
       position: absolute;
       display: none;
       background-color: #fff;
-      height: 50%;
+      min-height: 50%;
       width: 100%;
       gap: 4rem;
       top: 5%;
@@ -282,7 +285,7 @@
     .animate-winner-img {
       animation: grow-winner-img 0.6s linear forwards;
     }
-    .win-alert p{
+    .win-alert p {
       font-size: 1.8rem;
     }
     @keyframes grow-winner-img {
