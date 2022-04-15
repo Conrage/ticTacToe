@@ -148,6 +148,7 @@ io.on("connection", (socket) => {
   });
   socket.on("disconnect", () => {
     let room = getRoom(socket.roomId);
+    if(!room) return;
     for (let i = 0; i < room.players.length; i++) {
       if (room.players[i].id === socket.id) {
         room.players.splice(i, 1);
