@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const http = require("http");
-const { rulesToMonitor } = require("nodemon/lib/monitor/match");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -164,6 +163,8 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, (err) => {
-  console.log("Server listening on :3000");
+let PORT = process.env.PORT || 3000;
+
+server.listen(PORT, (err) => {
+  console.log("Server listening on :" + PORT);
 });

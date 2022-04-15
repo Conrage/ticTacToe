@@ -12,7 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
+    "netlify-lambda": "^2.0.15",
     "nodemon": "^2.0.15",
+    "serverless-http": "^3.0.1",
     "socket.io": "^4.4.1"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
