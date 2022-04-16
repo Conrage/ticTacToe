@@ -9,6 +9,7 @@
   <body>
     <main class="background">
       <div id="alert-message" class="alert-message"></div>
+      <div id="scoreboard" class="scoreboard"></div>
       <section class="flex align-center justify-center relative">
         <div class="win-alert">
           <img id="winner-img" />
@@ -121,21 +122,21 @@
     };
     const showMessage = (message, type) => {
       let div = document.getElementById("alert-message");
+      div.classList = "";
+      div.style.display = "none";
+      div.classList.add("alert-message");
       div.classList.add(type + "-message");
       div.innerHTML = message;
       div.style.display = "flex";
-
-      setTimeout(() => {
-        div.classList.remove(type + "-message");
-        div.style.display = "none";
-      }, 2000);
     };
     socket.emit("entered-room", roomId);
     socket.on("entered-room-" + roomId, (room) => {
       let roomData = room;
       renderGame(roomData.tiles);
       if (roomData.players.length > 1) {
-        showMessage("A user is playing with you!", "good");
+        showMessage("A user is playing with you! 😁", "good");
+      } else {
+        showMessage("You are alone in the room. 😢", "error");
       }
     });
     socket.on("tile-click-" + roomId, (room) => {
@@ -152,7 +153,7 @@
       resetGame();
     });
     socket.on("user-disconnected-" + roomId, () => {
-      showMessage("The user playing with you disconnected", "error");
+      showMessage("You are alone in the room. 😢", "error");
     });
     const tiles = document.getElementsByClassName("tile");
     for (let tile of tiles) {
@@ -284,8 +285,8 @@
       content: "";
       position: absolute;
       border-radius: 50%;
-      background-color: #ffe54c;
-      transition: 0.2s;
+      background-color: #ffe44c6f;
+      transition: 0.1s;
       z-index: -1;
       width: 0%;
       height: 0%;
@@ -320,7 +321,7 @@
       }
     }
     .animate {
-      animation: grow 0.2s linear forwards;
+      animation: grow 0.1s linear forwards;
     }
     @keyframes grow {
       0% {
