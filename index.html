@@ -45,7 +45,17 @@
   </script>
   <script type="module">
     import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
-    const socket = io("https://shielded-chamber-27050.herokuapp.com/");
+    const socket = io("https://shielded-chamber-27050.herokuapp.com", {
+      withCredentials: true,
+
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            "my-custom-header": "abcd"
+          }
+        }
+      }
+    });
     const roomId = window.location.pathname.replace("/", "");
     let roomData;
     const calculateWinner = () => {
