@@ -4,10 +4,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/styles.css" />
     <title>Conrage - TicTacToe</title>
   </head>
   <body>
-    <main class="background">
+    <main class="placeholder">
+      <div class="loading">Loading...</div>
+    </main>
+    <main style="display:none;" class="background">
       <div id="alert-message" class="alert-message"></div>
       <div id="scoreboard" class="scoreboard"></div>
       <section class="flex align-center justify-center relative">
@@ -33,9 +37,15 @@
       </section>
     </main>
   </body>
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
+  <script type="text/javascript">
+    window.addEventListener("load", function () {
+      document.querySelector('.background').style.display = "grid";
+      document.querySelector('.placeholder').style.display = "none";
+    });
+  </script>
+  <script type="module">
+    import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+    const socket = io("ws://localhost:3000");
     const roomId = window.location.pathname.replace("/", "");
     let roomData;
     const calculateWinner = () => {
@@ -166,218 +176,4 @@
       resetGame();
     });
   </script>
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap");
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Signika", sans-serif;
-      color: #404040;
-    }
-    .relative {
-      position: relative;
-    }
-    .flex {
-      display: flex;
-    }
-    .justify-center {
-      justify-content: center;
-    }
-    .align-center {
-      align-items: center;
-    }
-    .alert-message {
-      font-size: 1.4rem;
-      position: relative;
-      text-align: center;
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-    .error-message:after {
-      position: absolute;
-      content: "";
-      width: 100%;
-      background-color: rgba(240, 76, 109, 0.404);
-      z-index: -1;
-      height: 30%;
-      bottom: 5px;
-    }
-    .good-message:after {
-      position: absolute;
-      content: "";
-      width: 100%;
-      background-color: rgba(76, 240, 106, 0.404);
-      z-index: -1;
-      height: 30%;
-      bottom: 5px;
-    }
-    .background {
-      /* background-color: #385f71; */
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      position: relative;
-      width: 100vw;
-    }
-    .container {
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 33% 33% 33%;
-      grid-template-rows: 33% 33% 33%;
-      max-width: 300px;
-    }
-    #winner-img {
-      max-width: 250px;
-    }
-    .win-alert {
-      position: absolute;
-      display: none;
-      background-color: #fff;
-      height: 100%;
-      width: 100%;
-      gap: 4rem;
-      justify-content: center;
-      z-index: 1;
-      align-items: center;
-      flex-direction: column;
-    }
-    .tile:nth-child(1) {
-      border-bottom: 4px solid #404040;
-      border-right: 4px solid #404040;
-    }
-    .tile:nth-child(2) {
-      border-bottom: 4px solid #404040;
-      border-right: 4px solid #404040;
-    }
-    .tile:nth-child(3) {
-      border-bottom: 4px solid #404040;
-    }
-    .tile:nth-child(4) {
-      border-bottom: 4px solid #404040;
-      border-right: 4px solid #404040;
-    }
-    .tile:nth-child(5) {
-      border-bottom: 4px solid #404040;
-      border-right: 4px solid #404040;
-    }
-    .tile:nth-child(6) {
-      border-bottom: 4px solid #404040;
-    }
-    .tile:nth-child(7) {
-      border-right: 4px solid #404040;
-    }
-    .tile:nth-child(8) {
-      border-right: 4px solid #404040;
-    }
-    .tile {
-      min-width: 100px;
-      min-height: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 50px;
-      position: relative;
-      cursor: pointer;
-    }
-    .tile:after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      background-color: #ffe44c6f;
-      transition: 0.1s;
-      z-index: -1;
-      width: 0%;
-      height: 0%;
-    }
-    img {
-      transition: 0.2s;
-      width: 0%;
-    }
-    .animate-winner {
-      animation: grow-winner 1s linear forwards;
-    }
-    .animate-winner-img {
-      animation: grow-winner-img 0.6s linear forwards;
-    }
-    .win-alert p {
-      font-size: 1.8rem;
-    }
-    @keyframes grow-winner-img {
-      0% {
-        width: 0%;
-      }
-      100% {
-        width: 30%;
-      }
-    }
-    @keyframes grow-winner {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-    .animate {
-      animation: grow 0.1s linear forwards;
-    }
-    @keyframes grow {
-      0% {
-        width: 0%;
-      }
-      100% {
-        width: 65%;
-      }
-    }
-    .default-button {
-      font-size: 16px;
-      font-weight: 400;
-      letter-spacing: 1px;
-      padding: 0.7rem 2rem;
-      outline: 0;
-      border: 2px solid black;
-      cursor: pointer;
-      position: relative;
-      background-color: rgba(0, 0, 0, 0);
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
-
-    .default-button:after {
-      content: "";
-      background-color: #ffe54c;
-      width: 100%;
-      z-index: -1;
-      position: absolute;
-      height: 100%;
-      top: 7px;
-      left: 7px;
-      transition: 0.2s;
-    }
-
-    .default-button:hover:after {
-      top: 0px;
-      left: 0px;
-    }
-
-    @media (min-width: 768px) {
-      .tile:hover:after {
-        width: 50%;
-        height: 50%;
-      }
-    }
-    @media (max-width: 768px) {
-      .tile:active:after {
-        width: 50%;
-        height: 50%;
-      }
-      .background {
-        height: 80vh;
-        padding: 5rem 0rem;
-      }
-    }
-  </style>
 </html>
