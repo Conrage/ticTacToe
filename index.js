@@ -4,8 +4,6 @@ const http = require("http");
 const server = http.createServer(app);
 const { io } = require("socket.io-client");
 const socket = io("https://shielded-chamber-27050.herokuapp.com", {
-  withCredentials: true,
-
   transportOptions: {
     polling: {
       extraHeaders: {
