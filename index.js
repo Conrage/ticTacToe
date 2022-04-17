@@ -3,7 +3,7 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { io } = require("socket.io-client");
-const socket = io("ws://shielded-chamber-27050.herokuapp.com/");
+const socket = io("wss://shielded-chamber-27050.herokuapp.com/");
 
 const roomAlreadyFull = (room) => {
   if (room.players.length > 1) {
