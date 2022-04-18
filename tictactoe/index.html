@@ -47,7 +47,7 @@
     import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
     const socket = io("https://conrage-tictactoe-socket.vercel.app", {
       extraHeaders: {
-        xAccessToken: 'a1b2c3d4e5f6',
+        "x-access-token": 'a1b2c3d4e5f6',
       },
     });
     const roomId = window.location.pathname.replace("/", "");
