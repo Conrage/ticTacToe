@@ -11,6 +11,7 @@ const io = new Server(server, {
       res.writeHead(200, {
         "Access-Control-Allow-Origin": process.env.SOCKET_ALLOWED_ORIGIN,
         "Access-Control-Allow-Methods": "GET,POST",
+        "Access-Control-Allow-Headers": "x-access-token"
       });
       res.end();
     },
