@@ -11,7 +11,7 @@
     <main class="placeholder">
       <div class="loading">Loading...</div>
     </main>
-    <main style="display:none;" class="background">
+    <main style="display: none" class="background">
       <div id="alert-message" class="alert-message"></div>
       <div id="scoreboard" class="scoreboard"></div>
       <section class="flex align-center justify-center relative">
@@ -39,29 +39,65 @@
   </body>
   <script type="text/javascript">
     window.addEventListener("load", function () {
-      document.querySelector('.background').style.display = "grid";
-      document.querySelector('.placeholder').style.display = "none";
+      document.querySelector(".background").style.display = "grid";
+      document.querySelector(".placeholder").style.display = "none";
     });
   </script>
   <script type="module">
     import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
-    const socket = io("https://conrage-tictactoe-socket.vercel.app");
+    const socket = io("https://conrage-tictactoe-socket.vercel.app", {
+      extraHeaders: {
+        xAccessToken: 'a1b2c3d4e5f6',
+      },
+    });
     const roomId = window.location.pathname.replace("/", "");
     const state = {
-      roomData: {}
-    }
+      roomData: {},
+    };
     const calculateWinner = () => {
       const WIN_CONDITIONS = [
-        [state.roomData.tiles.tile_1, state.roomData.tiles.tile_2, state.roomData.tiles.tile_3],
-        [state.roomData.tiles.tile_4, state.roomData.tiles.tile_5, state.roomData.tiles.tile_6],
-        [state.roomData.tiles.tile_7, state.roomData.tiles.tile_8, state.roomData.tiles.tile_9],
+        [
+          state.roomData.tiles.tile_1,
+          state.roomData.tiles.tile_2,
+          state.roomData.tiles.tile_3,
+        ],
+        [
+          state.roomData.tiles.tile_4,
+          state.roomData.tiles.tile_5,
+          state.roomData.tiles.tile_6,
+        ],
+        [
+          state.roomData.tiles.tile_7,
+          state.roomData.tiles.tile_8,
+          state.roomData.tiles.tile_9,
+        ],
 
-        [state.roomData.tiles.tile_1, state.roomData.tiles.tile_4, state.roomData.tiles.tile_7],
-        [state.roomData.tiles.tile_2, state.roomData.tiles.tile_5, state.roomData.tiles.tile_8],
-        [state.roomData.tiles.tile_3, state.roomData.tiles.tile_6, state.roomData.tiles.tile_9],
+        [
+          state.roomData.tiles.tile_1,
+          state.roomData.tiles.tile_4,
+          state.roomData.tiles.tile_7,
+        ],
+        [
+          state.roomData.tiles.tile_2,
+          state.roomData.tiles.tile_5,
+          state.roomData.tiles.tile_8,
+        ],
+        [
+          state.roomData.tiles.tile_3,
+          state.roomData.tiles.tile_6,
+          state.roomData.tiles.tile_9,
+        ],
 
-        [state.roomData.tiles.tile_1, state.roomData.tiles.tile_5, state.roomData.tiles.tile_9],
-        [state.roomData.tiles.tile_7, state.roomData.tiles.tile_5, state.roomData.tiles.tile_3],
+        [
+          state.roomData.tiles.tile_1,
+          state.roomData.tiles.tile_5,
+          state.roomData.tiles.tile_9,
+        ],
+        [
+          state.roomData.tiles.tile_7,
+          state.roomData.tiles.tile_5,
+          state.roomData.tiles.tile_3,
+        ],
       ];
       let isEqual;
       let winnerCondition;
