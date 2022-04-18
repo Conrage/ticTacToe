@@ -45,7 +45,7 @@
   </script>
   <script type="module">
     import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
-    const socket = io("https://conrage-tictactoe-socket.vercel.app");
+    const socket = io("https://conrage-tictactoe-socket.vercel.app", { transports: ['websocket', 'polling', 'flashsocket'] });
     const roomId = window.location.pathname.replace("/", "");
     const state = {
       roomData: {}
