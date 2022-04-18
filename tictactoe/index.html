@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>Conrage - TicTacToe</title>
+  </head>
+  <body>
+    <main class="placeholder">
+      <div class="loading">Loading...</div>
+    </main>
+    <main style="display:none;" class="background">
+      <div id="alert-message" class="alert-message"></div>
+      <div id="scoreboard" class="scoreboard"></div>
+      <section class="flex align-center justify-center relative">
+        <div class="win-alert">
+          <img id="winner-img" />
+          <p id="winner-msg"></p>
+        </div>
+        <div class="container">
+          <div class="tile" id="tile_1"></div>
+          <div class="tile" id="tile_2"></div>
+          <div class="tile" id="tile_3"></div>
+          <div class="tile" id="tile_4"></div>
+          <div class="tile" id="tile_5"></div>
+          <div class="tile" id="tile_6"></div>
+          <div class="tile" id="tile_7"></div>
+          <div class="tile" id="tile_8"></div>
+          <div class="tile" id="tile_9"></div>
+        </div>
+      </section>
+      <section class="display announcer hide"></section>
+      <section class="controls">
+        <button class="default-button" role="button" id="reset">Reset</button>
+      </section>
+    </main>
+  </body>
+  <script type="text/javascript">
+    window.addEventListener("load", function () {
+      document.querySelector('.background').style.display = "grid";
+      document.querySelector('.placeholder').style.display = "none";
+    });
+  </script>
+  <script type="module">
+    import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+    const socket = io("https://shielded-chamber-27050.herokuapp.com");
+    const roomId = window.location.pathname.replace("/", "");
+    const state = {
+      roomData: {}
+    }
+    const calculateWinner = () => {
+      const WIN_CONDITIONS = [
+        [state.roomData.tiles.tile_1, state.roomData.tiles.tile_2, state.roomData.tiles.tile_3],
+        [state.roomData.tiles.tile_4, state.roomData.tiles.tile_5, state.roomData.tiles.tile_6],
+        [state.roomData.tiles.tile_7, state.roomData.tiles.tile_8, state.roomData.tiles.tile_9],
+
+        [state.roomData.tiles.tile_1, state.roomData.tiles.tile_4, state.roomData.tiles.tile_7],
+        [state.roomData.tiles.tile_2, state.roomData.tiles.tile_5, state.roomData.tiles.tile_8],
+        [state.roomData.tiles.tile_3, state.roomData.tiles.tile_6, state.roomData.tiles.tile_9],
+
+        [state.roomData.tiles.tile_1, state.roomData.tiles.tile_5, state.roomData.tiles.tile_9],
+        [state.roomData.tiles.tile_7, state.roomData.tiles.tile_5, state.roomData.tiles.tile_3],
+      ];
+      let isEqual;
+      let winnerCondition;
+      for (let i = 0; i < WIN_CONDITIONS.length; i++) {
+        isEqual = WIN_CONDITIONS[i].every((element) => element === "xis");
+        isEqual = isEqual
+          ? isEqual
+          : WIN_CONDITIONS[i].every((element) => element === "bola");
+        if (isEqual) {
+          winnerCondition = WIN_CONDITIONS[i];
+          break;
+        }
+      }
+      return { win: isEqual, condition: winnerCondition };
+    };
+    const renderGame = (tiles) => {
+      for (let tile in tiles) {
+        const xis = document.createElement("img");
+        xis.name = "xis";
+        xis.src = "/assets/xis.svg";
+        const bola = document.createElement("img");
+        bola.name = "xis";
+        bola.src = "/assets/bola.svg";
+        if (tiles[tile] === "xis") {
+          if (document.getElementById(tile).childNodes.length < 1) {
+            document.getElementById(tile).append(xis);
+            setTimeout(() => {
+              document
+                .getElementById(tile)
+                .childNodes[0].classList.add("animate");
+            }, 1);
+          }
+        } else if (tiles[tile] === "bola") {
+          if (document.getElementById(tile).childNodes.length < 1) {
+            document.getElementById(tile).append(bola);
+            setTimeout(() => {
+              document
+                .getElementById(tile)
+                .childNodes[0].classList.add("animate");
+            }, 0);
+          }
+        } else if (!tiles[tile]) {
+          document.getElementById(tile).innerHTML = "";
+        }
+      }
+    };
+    const resetGame = () => {
+      let section = document.querySelector(".win-alert");
+      let img = document.getElementById("winner-img");
+      section.style.display = "none";
+      section.classList.remove("animate-winner");
+      img.classList.remove("animate");
+    };
+    const renderWinner = (condition) => {
+      let winner = condition[0];
+      let section = document.querySelector(".win-alert");
+      let img = document.getElementById("winner-img");
+      img.src = "/assets/" + winner + ".svg";
+      const translateCondition = {
+        xis: "X",
+        bola: "O",
+      };
+      document.getElementById("winner-msg").innerHTML =
+        "The winner is " + translateCondition[condition[0]] + "! 🎉";
+      setTimeout(() => {
+        section.style.display = "flex";
+        img.classList.add("animate-winner-img");
+        section.classList.add("animate-winner");
+      }, 1);
+    };
+    const showMessage = (message, type) => {
+      let div = document.getElementById("alert-message");
+      div.classList = "";
+      div.style.display = "none";
+      div.classList.add("alert-message");
+      div.classList.add(type + "-message");
+      div.innerHTML = message;
+      div.style.display = "flex";
+    };
+    socket.emit("entered-room", roomId);
+    socket.on("entered-room-" + roomId, (room) => {
+      state.roomData = room;
+      renderGame(state.roomData.tiles);
+      if (state.roomData.players.length > 1) {
+        showMessage("A user is playing with you! 😁", "good");
+      } else {
+        showMessage("You are alone in the room. 😢", "error");
+      }
+    });
+    socket.on("tile-click-" + roomId, (room) => {
+      state.roomData = room;
+      renderGame(state.roomData.tiles);
+      let win = calculateWinner();
+      if (win.win) renderWinner(win.condition);
+    });
+    socket.on("game-update-" + roomId, (room) => {
+      state.roomData = room;
+      renderGame(state.roomData.tiles);
+    });
+    socket.on("reset-game-" + roomId, () => {
+      resetGame();
+    });
+    socket.on("user-disconnected-" + roomId, () => {
+      showMessage("You are alone in the room. 😢", "error");
+    });
+    const tiles = document.getElementsByClassName("tile");
+    for (let tile of tiles) {
+      tile.addEventListener("click", () => {
+        socket.emit("tile-click", tile.id);
+      });
+    }
+    document.getElementById("reset").addEventListener("click", () => {
+      socket.emit("reset-game", roomId);
+      resetGame();
+    });
+  </script>
+</html>
