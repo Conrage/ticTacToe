@@ -1,7 +1,11 @@
 # ticTacToe
 
-#### Is available to play at https://conrage-tictactoe.vercel.app/
-
+### The game is available to play at https://conrage-tictactoe.vercel.app/
+##### To play with your friend just get the room code generate after the url, and send to him, for example
+```
+//The url is https://conrage-tictactoe.vercel.app/45
+//So your room code is 45
+```
 ## Or you can download and play on your machine
 
 #### Install dependencies for both socket-server and tictactoe client
