@@ -6,15 +6,7 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: process.env.SOCKET_ALLOWED_ORIGIN,
-    handlePreflightRequest: (req, res, next) => {
-      res.writeHead(200, {
-        "Access-Control-Allow-Origin": process.env.SOCKET_ALLOWED_ORIGIN,
-        "Access-Control-Allow-Methods": "GET,POST",
-        "Access-Control-Allow-Headers": "x-access-token"
-      });
-      res.end();
-    },
+    origin: "*",
   },
 });
 
@@ -40,6 +32,7 @@ const createPlayer = (id, shape) => {
 
 const defineShape = (room) => {
   let shape;
+  if(!room.players) return;
   if (room.players.length == 0) {
     shape = "xis";
     return shape;
@@ -51,6 +44,10 @@ const defineShape = (room) => {
 io.on("connection", (socket) => {
   socket.on("entered-room", (roomid) => {
     let room = roomsController.getRoom(roomid);
+    if(!room) {
+      roomsController.createRoom(roomid);
+      room = roomsController.getRoom(roomid);
+    }
     let shape = defineShape(room);
     let player = createPlayer(socket.id, shape);
     room.players.push(player);
