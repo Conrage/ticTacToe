@@ -33,3 +33,6 @@ const io = new Server(server, {
 `npm run start`
 
 #### Access in your browser at http://localhost:5000
+
+## Como contribuir
+#### Leia o guia de contribuição [aqui](CONTRIBUTING.md)
